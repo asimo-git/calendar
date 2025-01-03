@@ -1,0 +1,90 @@
+.page {
+  padding: 5vw 12vw;
+}
+
+.main {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+}
+
+.calendar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.date,
+.dayTitle {
+  font-family: var(--font-marck-script);
+  text-align: center;
+}
+
+.date {
+  font-size: 2em;
+  margin-bottom: 1em;
+}
+
+.number {
+  position: relative;
+  font-size: 3em;
+  line-height: 70%;
+  padding: 0.1em;
+}
+
+.number::before,
+.number::after {
+  font-size: 1.5rem;
+  color: --font-main-color;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.number::before {
+  content: "☙";
+  left: -1.5rem;
+}
+
+.number::after {
+  content: "❧";
+  right: -1.5rem;
+}
+
+.imageContainer {
+  width: 300px;
+  height: auto;
+  border-radius: 15px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.imageContainer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 15px;
+  box-shadow: inset 1em 1em 1em #d95502, inset -1em -1em 1em #d95502;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Enable hover only on non-touch devices */
+@media (hover: hover) and (pointer: fine) {
+  a:hover {
+    background: var(--button-primary-hover);
+    border-color: transparent;
+  }
+}
+
+@media (max-width: 900px) {
+  .main {
+    flex-wrap: wrap;
+  }
+}
