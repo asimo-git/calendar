@@ -75,14 +75,6 @@
   z-index: 10;
 }
 
-/* Enable hover only on non-touch devices */
-@media (hover: hover) and (pointer: fine) {
-  a:hover {
-    background: var(--button-primary-hover);
-    border-color: transparent;
-  }
-}
-
 @media (max-width: 900px) {
   .main {
     flex-wrap: wrap;
