@@ -5,9 +5,9 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "raw.githubusercontent.com",
+        hostname: "tarrtqhugnseepasvhcy.supabase.co",
         port: "",
-        pathname: "/asimo-git/calendar/develop/public/**",
+        pathname: "/storage/v1/object/public/images/**",
       },
     ],
   },

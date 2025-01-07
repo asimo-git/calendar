@@ -1,33 +1,18 @@
-import fs from "fs";
 import Image from "next/image";
-import path from "path";
 import styles from "./page.module.css";
-import { githubBaseUrl, MONTHS } from "./utils/constants";
+import { getDayDescription } from "./services/supabase";
+import { defaultDayDescription, MONTHS } from "./utils/constants";
+import { getDate } from "./utils/helpers";
 
 export default async function Home() {
-  function getDate() {
-    const now = new Date();
-    const day = now.getDate();
-    const month = now.getMonth();
-    return { day, month };
-  }
-
   const currentDate = getDate();
   const currentKey = `${currentDate.day}-${currentDate.month}`;
 
-  async function getContent(key: string) {
-    const filePath = path.join(process.cwd(), "public", "data.json");
+  const { description, imageUrl } = await getDayDescription(currentKey);
 
-    const fileContent = fs.readFileSync(filePath, "utf-8");
-    const jsonData = JSON.parse(fileContent);
-
-    return (
-      jsonData[key] ||
-      "Пусть это будет просто день, в котором не происходит ничего особенного"
-    );
-  }
-
-  const textContent = await getContent(currentKey);
+  const isAvailable = imageUrl
+    ? await fetch(imageUrl).then((res) => res.ok)
+    : false;
 
   return (
     <div className={styles.page}>
@@ -40,7 +25,7 @@ export default async function Home() {
           </h1>
           <div className={styles.imageContainer}>
             <Image
-              src={`${githubBaseUrl}${currentKey}.png`}
+              src={isAvailable ? imageUrl : "/default-img.jpg"}
               alt="image of the day"
               width={300}
               height={0}
@@ -50,7 +35,7 @@ export default async function Home() {
         </section>
         <section className={styles.content}>
           <h2 className={styles.dayTitle}>Quitter&apos;s Day</h2>
-          <div>{textContent}</div>
+          <div>{description ? description : defaultDayDescription}</div>
         </section>
       </main>
     </div>
