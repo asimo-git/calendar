@@ -31,13 +31,13 @@ export default async function Home() {
 
   return (
     <div className={styles.page}>
-      <h1 className={styles.date}>
-        <span className={styles.number}>{currentDate.day}</span>
-        <br></br>
-        {MONTHS[currentDate.month]}
-      </h1>
       <main className={styles.main}>
         <section className={styles.calendar}>
+          <h1 className={styles.date}>
+            <span className={styles.number}>{currentDate.day}</span>
+            <br></br>
+            {MONTHS[currentDate.month]}
+          </h1>
           <div className={styles.imageContainer}>
             <Image
               src={`${githubBaseUrl}${currentKey}.png`}

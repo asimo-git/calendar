@@ -1,10 +1,15 @@
 .page {
   padding: 5vw 12vw;
+  background-image: url(/page-bg.png);
+  background-size: 100% 100%;
+  margin: 1em;
+  min-height: calc(100vh - 2em);
 }
 
 .main {
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
+  align-items: center;
   gap: 32px;
 }
 
@@ -16,7 +21,7 @@
 
 .date,
 .dayTitle {
-  font-family: var(--font-marck-script);
+  font-family: var(--font-title);
   text-align: center;
 }
 
@@ -27,7 +32,7 @@
 
 .number {
   position: relative;
-  font-size: 3em;
+  font-size: 2em;
   line-height: 70%;
   padding: 0.1em;
 }
@@ -54,25 +59,14 @@
 .imageContainer {
   width: 300px;
   height: auto;
-  border-radius: 15px;
+  background-image: url(/img-bg.png);
+  background-size: 100% 100%;
+  padding: 1em;
   overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
-}
-
-.imageContainer::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  border-radius: 15px;
-  box-shadow: inset 1em 1em 1em #d95502, inset -1em -1em 1em #d95502;
-  pointer-events: none;
-  z-index: 10;
 }
 
 @media (max-width: 900px) {

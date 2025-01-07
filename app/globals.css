@@ -1,5 +1,5 @@
 :root {
-  --font-main-color: #ffe4c2;
+  --font-main-color: #625f5c;
 }
 
 html,
@@ -11,14 +11,11 @@ body {
 
 body {
   color: var(--font-main-color);
-  background-image: url(/bg-left.png), url(/bg-right.png),
-    radial-gradient(ellipse at center, #d95502 0%, #301f00 80%);
-  background-repeat: repeat-y, repeat-y, no-repeat;
-  background-position: left top, right top;
-  background-size: 10vw auto, 10vw auto, cover;
-  font-family: var(--font-nunito), Helvetica, sans-serif;
+  background-image: url(/bg.jpg);
+  font-family: var(--font-main-text), Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-size: 20px;
 }
 
 * {

@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
-import { Marck_Script, Nunito } from "next/font/google";
+import { Neucha, Rubik_Doodle_Shadow } from "next/font/google";
 import "./globals.css";
 
-const marckScript = Marck_Script({
-  variable: "--font-marck-script",
+const rubikDoodleShadow = Rubik_Doodle_Shadow({
+  variable: "--font-title",
   subsets: ["latin", "cyrillic"],
   weight: ["400"],
 });
 
-const nunito = Nunito({
-  variable: "--font-nunito",
+const neucha = Neucha({
+  variable: "--font-main-text",
   subsets: ["latin", "cyrillic"],
   weight: ["400"],
 });
@@ -26,7 +26,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${marckScript.variable} ${nunito.variable}`}>
+      <body className={`${rubikDoodleShadow.variable} ${neucha.variable}`}>
         {children}
       </body>
     </html>
