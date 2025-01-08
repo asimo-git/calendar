@@ -27,15 +27,16 @@ export default async function Home() {
             <Image
               src={isAvailable ? imageUrl : "/default-img.jpg"}
               alt="image of the day"
-              width={300}
-              height={0}
-              layout="intrinsic"
+              fill
+              style={{ objectFit: "contain" }}
             />
           </div>
         </section>
-        <section className={styles.content}>
+        <section className={styles.description}>
           <h2 className={styles.dayTitle}>Quitter&apos;s Day</h2>
-          <div>{description ? description : defaultDayDescription}</div>
+          <div className={styles.content}>
+            {description ? description : defaultDayDescription}
+          </div>
         </section>
       </main>
     </div>

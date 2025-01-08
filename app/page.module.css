@@ -1,9 +1,9 @@
 .page {
-  padding: 5vw 12vw;
+  padding: 2em;
   background-image: url(/page-bg.png);
   background-size: 100% 100%;
-  margin: 1em;
-  min-height: calc(100vh - 2em);
+  margin: 0;
+  height: 100vh;
 }
 
 .main {
@@ -11,12 +11,19 @@
   justify-content: space-around;
   align-items: center;
   gap: 32px;
+  height: 100%;
 }
 
 .calendar {
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-image: url(/img-bg.png);
+  background-size: 100% 100%;
+  /* height: 80%; */
+  width: 16em;
+  padding: 2em 1em;
+  flex-shrink: 0;
 }
 
 .date,
@@ -27,7 +34,7 @@
 
 .date {
   font-size: 2em;
-  margin-bottom: 1em;
+  margin: 0.3em;
 }
 
 .number {
@@ -57,18 +64,62 @@
 }
 
 .imageContainer {
-  width: 300px;
-  background-image: url(/img-bg.png);
-  background-size: 100% 100%;
-  padding: 1em;
+  width: 100%;
+  height: 16em;
   overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
+}
+
+.description {
+  display: flex;
+  flex-direction: column;
+  max-height: 90%;
+}
+
+.content {
+  margin-top: 1em;
+  flex: 1;
+  max-height: 100%;
+  overflow: auto;
+  white-space: normal;
+  padding: 1em;
+}
+
+.content::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+.content::-webkit-scrollbar-thumb {
+  background-color: #7d551ac5;
+  border-radius: 2px;
+}
+
+.content::-webkit-scrollbar-track {
+  background-color: #fbe0ae;
+  border-radius: 2px;
 }
 
 @media (max-width: 900px) {
+  .page {
+    height: auto;
+    background-image: url(/page-bg-portret.png);
+  }
+
   .main {
     flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 450px) {
+  .page {
+    padding: 2em 1em;
+  }
+
+  .calendar {
+    width: 100%;
   }
 }
