@@ -1,0 +1,152 @@
+.page {
+  padding: 0.5em 1em;
+  margin: 0;
+  height: 100vh;
+}
+
+.main {
+  background-image: url(/page-bg.png);
+  background-size: 100% 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  gap: 32px;
+  height: 93%;
+  padding: 3em;
+}
+
+.title {
+  font-family: var(--font-accent), Helvetica, sans-serif;
+  color: #fff196;
+  letter-spacing: 0.2em;
+  font-weight: 100;
+  line-height: 1;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding-left: 0.5em;
+  text-shadow: 2px 2px 4px rgb(41 31 0 / 88%);
+  font-size: 30px;
+}
+
+.calendar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-image: url(/img-bg.png);
+  background-size: 100% 100%;
+  width: 17em;
+  padding: 2em 1em;
+  flex-shrink: 0;
+}
+
+.dayTitle {
+  font-family: var(--font-accent), Helvetica, sans-serif;
+  font-size: 35px;
+}
+
+.date {
+  font-size: 2em;
+  margin: 0.3em;
+  text-align: center;
+  font-family: var(--font-title);
+}
+
+.number {
+  position: relative;
+  font-size: 2em;
+  line-height: 70%;
+  padding: 0.1em;
+}
+
+.number::before,
+.number::after {
+  font-size: 1.5rem;
+  color: --font-main-color;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.number::before {
+  content: "☙";
+  left: -1.5rem;
+}
+
+.number::after {
+  content: "❧";
+  right: -1.5rem;
+}
+
+.imageContainer {
+  width: 100%;
+  height: 16em;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.description {
+  display: flex;
+  flex-direction: column;
+  max-height: 100%;
+}
+
+.content {
+  margin-top: 1em;
+  flex: 1;
+  max-height: 100%;
+  max-width: 800px;
+  overflow: auto;
+  white-space: normal;
+  padding-right: 0.5em;
+}
+
+.content::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+.content::-webkit-scrollbar-thumb {
+  background-color: #7d551a95;
+  border-radius: 2px;
+}
+
+.content::-webkit-scrollbar-track {
+  background-color: #fbe0ae;
+  border-radius: 2px;
+}
+
+@media (max-width: 900px) {
+  .page {
+    height: auto;
+    padding: 0.5em;
+  }
+
+  .main {
+    flex-wrap: wrap;
+    background-image: url(/page-bg-portret.png);
+    text-align: center;
+  }
+}
+
+@media (max-width: 450px) {
+  .main {
+    padding: 0;
+    background-image: none;
+    gap: 0.5em;
+  }
+
+  .calendar {
+    width: 100%;
+  }
+
+  .description {
+    background-image: url(/page-bg-portret.png);
+    background-size: 100% 100%;
+    padding: 1em;
+  }
+}
