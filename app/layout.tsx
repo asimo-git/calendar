@@ -17,6 +17,7 @@ const neucha = Neucha({
 export const metadata: Metadata = {
   title: "Calendar App",
   description: "Calendar App",
+  manifest: "/manifest.json",
 };
 
 export default function RootLayout({
@@ -26,6 +27,24 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if ('serviceWorker' in navigator) {
+                navigator.serviceWorker
+                  .register('/service-worker.js')
+                  .then((registration) => {
+                    console.log('Service Worker зарегистрирован:', registration);
+                  })
+                  .catch((error) => {
+                    console.error('Ошибка регистрации Service Worker:', error);
+                  });
+              }
+            `,
+          }}
+        ></script>
+      </head>
       <body className={`${rubikDoodleShadow.variable} ${neucha.variable}`}>
         {children}
       </body>

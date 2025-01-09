@@ -16,8 +16,6 @@ export const getDayDescription = async (key: string) => {
     .eq("key", key)
     .single();
 
-  console.log({ data, error });
-
   if (error) {
     console.error("Error fetching data:", error.message);
     return { description: "", imageUrl: "" };
