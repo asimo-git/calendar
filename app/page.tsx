@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { Fragment } from "react";
 import styles from "./page.module.css";
 import { getDayDescription } from "./services/supabase";
 import {
@@ -7,6 +8,8 @@ import {
   MONTHS,
 } from "./utils/constants";
 import { getDate } from "./utils/helpers";
+
+export const revalidate = false;
 
 export default async function Home() {
   const currentDate = getDate();
@@ -42,7 +45,14 @@ export default async function Home() {
         <section className={styles.description}>
           <h3 className={styles.dayTitle}>{title ? title : defaultDayTitle}</h3>
           <div className={styles.content}>
-            {description ? description : defaultDayDescription}
+            {description
+              ? description.split("\n").map((line: string, index: number) => (
+                  <Fragment key={index}>
+                    {line}
+                    <br />
+                  </Fragment>
+                ))
+              : defaultDayDescription}
           </div>
         </section>
       </main>

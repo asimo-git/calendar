@@ -1,11 +1,15 @@
-import Home from "@/app/page";
 import { revalidatePath } from "next/cache";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
     revalidatePath("/");
-    await Home();
+
+    const url = new URL(request.url);
+    const baseUrl = `${url.protocol}//${url.host}`;
+
+    await fetch(`${baseUrl}/`);
+
     return NextResponse.json({ success: true, message: "Page revalidated" });
   } catch (error) {
     console.error("Error during revalidation:", error);
