@@ -12,14 +12,18 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 export const getDayDescription = async (key: string) => {
   const { data, error } = await supabase
     .from("days")
-    .select("content, image_link")
+    .select("content, image_link, title")
     .eq("key", key)
     .single();
 
   if (error) {
     console.error("Error fetching data:", error.message);
-    return { description: "", imageUrl: "" };
+    return { description: "", imageUrl: "", title: "" };
   }
 
-  return { description: data?.content || "", imageUrl: data?.image_link || "" };
+  return {
+    description: data?.content || "",
+    imageUrl: data?.image_link || "",
+    title: data?.title || "",
+  };
 };

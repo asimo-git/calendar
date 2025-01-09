@@ -15,3 +15,5 @@ export const MONTHS = [
 
 export const defaultDayDescription =
   "Пусть это будет просто день, в котором не происходит ничего особенного";
+
+export const defaultDayTitle = "День на Земле";

@@ -1,6 +1,12 @@
 import type { Metadata } from "next";
-import { Neucha, Rubik_Doodle_Shadow } from "next/font/google";
+import { Caveat, Neucha, Rubik_Doodle_Shadow } from "next/font/google";
 import "./globals.css";
+
+const caveat = Caveat({
+  variable: "--font-accent",
+  subsets: ["latin", "cyrillic"],
+  weight: ["400"],
+});
 
 const rubikDoodleShadow = Rubik_Doodle_Shadow({
   variable: "--font-title",
@@ -45,7 +51,9 @@ export default function RootLayout({
           }}
         ></script>
       </head>
-      <body className={`${rubikDoodleShadow.variable} ${neucha.variable}`}>
+      <body
+        className={`${rubikDoodleShadow.variable} ${neucha.variable} ${caveat.variable}`}
+      >
         {children}
       </body>
     </html>

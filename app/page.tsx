@@ -1,14 +1,18 @@
 import Image from "next/image";
 import styles from "./page.module.css";
 import { getDayDescription } from "./services/supabase";
-import { defaultDayDescription, MONTHS } from "./utils/constants";
+import {
+  defaultDayDescription,
+  defaultDayTitle,
+  MONTHS,
+} from "./utils/constants";
 import { getDate } from "./utils/helpers";
 
 export default async function Home() {
   const currentDate = getDate();
   const currentKey = `${currentDate.day}-${currentDate.month}`;
 
-  const { description, imageUrl } = await getDayDescription(currentKey);
+  const { description, imageUrl, title } = await getDayDescription(currentKey);
 
   const isAvailable = imageUrl
     ? await fetch(imageUrl).then((res) => res.ok)
@@ -16,13 +20,16 @@ export default async function Home() {
 
   return (
     <div className={styles.page}>
+      <header>
+        <h1 className={styles.title}>Календарь дальней дороги</h1>
+      </header>
       <main className={styles.main}>
         <section className={styles.calendar}>
-          <h1 className={styles.date}>
+          <h2 className={styles.date}>
             <span className={styles.number}>{currentDate.day}</span>
             <br></br>
             {MONTHS[currentDate.month]}
-          </h1>
+          </h2>
           <div className={styles.imageContainer}>
             <Image
               src={isAvailable ? imageUrl : "/default-img.jpg"}
@@ -33,7 +40,7 @@ export default async function Home() {
           </div>
         </section>
         <section className={styles.description}>
-          <h2 className={styles.dayTitle}>Quitter&apos;s Day</h2>
+          <h3 className={styles.dayTitle}>{title ? title : defaultDayTitle}</h3>
           <div className={styles.content}>
             {description ? description : defaultDayDescription}
           </div>
