@@ -9,7 +9,11 @@ import {
 } from "./utils/constants";
 import { getDate } from "./utils/helpers";
 
-export const revalidate = false;
+export const headers = () => {
+  return {
+    "Cache-Control": "no-store, max-age=0",
+  };
+};
 
 export default async function Home() {
   const currentDate = getDate();
