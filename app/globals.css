@@ -26,5 +26,10 @@ body {
 
 a {
   color: inherit;
-  text-decoration: none;
+}
+
+blockquote {
+  margin-left: 0.8em;
+  border-left: solid 8px #7c613959;
+  padding-left: 0.5em;
 }
