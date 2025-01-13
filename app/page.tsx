@@ -9,12 +9,6 @@ import {
 } from "./utils/constants";
 import { getDate } from "./utils/helpers";
 
-export const headers = () => {
-  return {
-    "Cache-Control": "no-store, max-age=0",
-  };
-};
-
 export default async function Home() {
   const currentDate = getDate();
   const currentKey = `${currentDate.day}-${currentDate.month}`;
@@ -39,7 +33,7 @@ export default async function Home() {
           </h2>
           <div className={styles.imageContainer}>
             <Image
-              src={isAvailable ? imageUrl : "/default-img.jpg"}
+              src={isAvailable ? imageUrl : "/default-img.png"}
               alt="image of the day"
               fill
               style={{ objectFit: "contain" }}
