@@ -26,7 +26,9 @@ export default async function Home() {
       <main className={styles.main}>
         <section className={styles.calendar}>
           <h2 className={styles.date}>
+            <span>☙</span>
             <span className={styles.number}>{currentDate.day}</span>
+            <span>❧</span>
             <br></br>
             {MONTHS[currentDate.month]}
           </h2>
