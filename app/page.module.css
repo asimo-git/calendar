@@ -55,10 +55,13 @@
 }
 
 .number {
-  position: relative;
   font-size: 2em;
   line-height: 70%;
-  padding: 0.1em;
+  padding: 0.1em 0.7em;
+  background-image: url("/curl-left.svg"), url("/curl-right.svg");
+  background-repeat: no-repeat;
+  background-size: 0.7em;
+  background-position: bottom 30% left, bottom 30% right;
 }
 
 .imageContainer {
