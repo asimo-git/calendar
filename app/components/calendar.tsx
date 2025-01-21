@@ -1,25 +1,47 @@
 "use client";
 
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import { getDayDescription } from "../services/supabase";
 import {
   defaultDayDescription,
   defaultDayTitle,
   MONTHS,
 } from "../utils/constants";
-import { getDate } from "../utils/helpers";
+import { checkImageAvailability, getDate } from "../utils/helpers";
 import styles from "./calendar.module.css";
 
-export default async function Calendar() {
+export default function Calendar() {
+  const [data, setData] = useState({
+    description: "",
+    imageUrl: "",
+    title: "",
+  });
+  const [isImageAvailable, setIsImageAvailable] = useState(false);
+
   const currentDate = getDate();
-  console.log(currentDate);
   const currentKey = `${currentDate.day}-${currentDate.month}`;
 
-  const { description, imageUrl, title } = await getDayDescription(currentKey);
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const { description, imageUrl, title } = await getDayDescription(
+          currentKey
+        );
 
-  const isAvailable = imageUrl
-    ? await fetch(imageUrl).then((res) => res.ok)
-    : false;
+        setData({ description, imageUrl, title });
+
+        if (imageUrl) {
+          const isAvailable = await checkImageAvailability(imageUrl);
+          setIsImageAvailable(isAvailable);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+
+    fetchData();
+  }, [currentKey]);
 
   return (
     <>
@@ -30,19 +52,21 @@ export default async function Calendar() {
           {MONTHS[currentDate.month]}
         </h2>
         <div className={styles.imageContainer}>
-          <Image
-            src={isAvailable ? imageUrl : "/default-img.png"}
-            alt="image of the day"
-            fill
-            style={{ objectFit: "contain" }}
-          />
+          {data.imageUrl !== "" && (
+            <Image
+              src={isImageAvailable ? data.imageUrl : "/default-img.png"}
+              alt="image of the day"
+              fill
+              style={{ objectFit: "contain" }}
+            />
+          )}
         </div>
       </section>
       <section className={styles.description}>
-        <h3 className={styles.dayTitle}>{title ? title : defaultDayTitle}</h3>
+        <h3 className={styles.dayTitle}>{data.title ?? defaultDayTitle}</h3>
         <div className={styles.content}>
-          {description ? (
-            <div dangerouslySetInnerHTML={{ __html: description }} />
+          {data.description !== null ? (
+            <div dangerouslySetInnerHTML={{ __html: data.description }} />
           ) : (
             defaultDayDescription
           )}
