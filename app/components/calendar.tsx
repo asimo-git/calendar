@@ -8,7 +8,11 @@ import {
   defaultDayTitle,
   MONTHS,
 } from "../utils/constants";
-import { checkImageAvailability, getDate } from "../utils/helpers";
+import {
+  checkImageAvailability,
+  getDate,
+  registerServiceWorker,
+} from "../utils/helpers";
 import styles from "./calendar.module.css";
 
 export default function Calendar() {
@@ -17,6 +21,8 @@ export default function Calendar() {
     imageUrl: "",
     title: "",
   });
+  registerServiceWorker();
+
   const [isImageAvailable, setIsImageAvailable] = useState(false);
 
   const currentDate = getDate();
