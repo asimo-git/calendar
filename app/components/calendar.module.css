@@ -5,6 +5,7 @@
   background-image: url(/img-bg.png);
   background-size: 100% 100%;
   width: 17em;
+  max-height: 100%;
   padding: 2em 1em;
   flex-shrink: 0;
   animation: fadeIn 1s ease-in-out;
@@ -42,17 +43,23 @@
   position: relative;
 }
 
+.dayImage {
+  animation: fadeIn 1s ease-in-out;
+  object-fit: contain;
+}
+
 .description {
   display: flex;
   flex-direction: column;
   max-height: 100%;
+  animation: fadeIn 1s ease-in-out;
 }
 
 .content {
   margin-top: 1em;
   flex: 1;
   max-height: 100%;
-  max-width: 800px;
+  max-width: 1000px;
   overflow: auto;
   white-space: normal;
   padding-right: 0.5em;

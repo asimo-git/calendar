@@ -63,7 +63,7 @@ export default function Calendar() {
               src={isImageAvailable ? data.imageUrl : "/default-img.png"}
               alt="image of the day"
               fill
-              style={{ objectFit: "contain" }}
+              className={styles.dayImage}
             />
           )}
         </div>
