@@ -2,7 +2,7 @@ const CACHE_NAME = "v2";
 const STATIC_FILES = [
   "/",
   "/manifest.json",
-  "/default-img.jpg",
+  "/default-img.png",
   "/icon512.png",
   "/android-icon-36x36.png",
   "/android-icon-48x48.png",
@@ -16,6 +16,25 @@ const STATIC_FILES = [
   "/page-bg.png",
 ];
 
+async function hasMidnightPassed() {
+  try {
+    const now = new Date();
+    const storedData = await caches
+      .open(CACHE_NAME)
+      .then((cache) => cache.match("/lastUpdate"));
+
+    if (!storedData) return true;
+
+    const lastUpdate = await storedData.json();
+    const lastDate = new Date(lastUpdate.timestamp);
+
+    return now.toDateString() !== lastDate.toDateString();
+  } catch (error) {
+    console.error("Error in hasMidnightPassed:", error);
+    return true;
+  }
+}
+
 // Кэшируем статические файлы при установке
 self.addEventListener("install", (event) => {
   event.waitUntil(
@@ -26,40 +45,48 @@ self.addEventListener("install", (event) => {
 // Очищаем старый кэш при активации
 self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches.keys().then((cacheNames) =>
-      Promise.all(
+    (async () => {
+      const cacheNames = await caches.keys();
+      await Promise.all(
         cacheNames.map((cacheName) => {
           if (cacheName !== CACHE_NAME) {
             return caches.delete(cacheName);
           }
         })
-      )
-    )
+      );
+    })()
   );
+  //SW немедленно начинает управлять всеми клиентами, заменяя старый SW, даже если вкладки не были перезагружены.
+  self.clients.claim();
 });
 
-// Перехватываем запросы и добавляем динамическое кэширование
 self.addEventListener("fetch", (event) => {
   const { request } = event;
 
-  // Динамическое кэширование API-запросов
-  if (request.url.includes("/api/getDayDescription")) {
+  if (request.url.includes("/rest/v1/days")) {
     event.respondWith(
-      caches.open(CACHE_NAME).then(
-        (cache) =>
-          fetch(request)
+      caches.open(CACHE_NAME).then(async (cache) => {
+        const midnightPassed = await hasMidnightPassed();
+
+        if (midnightPassed) {
+          return fetch(request)
             .then((response) => {
-              // Кэшируем ответ для последующего использования
               cache.put(request, response.clone());
+              cache.put(
+                "/lastUpdate",
+                new Response(JSON.stringify({ timestamp: new Date() }))
+              );
               return response;
             })
-            .catch(() => cache.match(request)) // Возвращаем кэш, если сеть недоступна
-      )
+            .catch(() => cache.match(request));
+        }
+
+        return cache.match(request);
+      })
     );
     return;
   }
 
-  // Обработка статических файлов
   event.respondWith(
     caches.match(request).then((response) => response || fetch(request))
   );
