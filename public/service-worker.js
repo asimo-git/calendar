@@ -63,6 +63,22 @@ self.addEventListener("activate", (event) => {
 self.addEventListener("fetch", (event) => {
   const { request } = event;
 
+  if (request.url.includes("/_next/image")) {
+    event.respondWith(
+      caches.open("image-cache").then(async (cache) => {
+        const cachedResponse = await cache.match(request);
+        if (cachedResponse) {
+          return cachedResponse;
+        }
+        return fetch(request).then((response) => {
+          cache.put(request, response.clone());
+          return response;
+        });
+      })
+    );
+    return;
+  }
+
   if (request.url.includes("/rest/v1/days")) {
     event.respondWith(
       caches.open(CACHE_NAME).then(async (cache) => {
