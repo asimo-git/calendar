@@ -23,7 +23,9 @@ export default function Calendar() {
   });
   registerServiceWorker();
 
-  const [isImageAvailable, setIsImageAvailable] = useState(false);
+  const [isImageAvailable, setIsImageAvailable] = useState<Boolean | null>(
+    null
+  );
 
   const currentDate = getDate();
   const currentKey = `${currentDate.day}-${currentDate.month}`;
@@ -40,6 +42,8 @@ export default function Calendar() {
         if (imageUrl) {
           const isAvailable = await checkImageAvailability(imageUrl);
           setIsImageAvailable(isAvailable);
+        } else {
+          setIsImageAvailable(false);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -58,7 +62,7 @@ export default function Calendar() {
           {MONTHS[currentDate.month]}
         </h2>
         <div className={styles.imageContainer}>
-          {data.imageUrl !== "" && (
+          {isImageAvailable !== null && (
             <Image
               src={isImageAvailable ? data.imageUrl : "/default-img.png"}
               alt="image of the day"
