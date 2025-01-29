@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import styles from "./menu.module.css";
 
 export default function Menu() {
@@ -14,11 +14,31 @@ export default function Menu() {
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
+    setSuccess(false);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!message) return;
+
     setIsSending(true);
-    setSuccess(true);
+
+    const response = await fetch("/api/contact", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message }),
+    });
+
+    const result = await response.json();
+
+    if (result.success) {
+      setSuccess(true);
+      setMessage("");
+    } else {
+      console.error("Ошибка отправки:", result.error);
+    }
+
+    setIsSending(false);
   };
 
   useEffect(() => {
@@ -81,6 +101,7 @@ export default function Menu() {
                   placeholder="Сообщить о неточности, предложить идею, поблагодарить или просто сказать привет!"
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
+                  onFocus={() => setSuccess(false)}
                   required
                 />
               </label>
