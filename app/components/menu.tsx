@@ -6,39 +6,44 @@ export default function Menu() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [isSending, setIsSending] = useState(false);
-  const [success, setSuccess] = useState(false);
+  const [isSubmited, setIsSubmited] = useState<boolean | null>(null);
+  const [isClosing, setIsClosing] = useState(false);
 
   const handleMenuClick = () => {
     setIsModalOpen(true);
   };
 
   const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setSuccess(false);
+    setIsClosing(true);
+    setTimeout(() => {
+      setIsModalOpen(false);
+      setIsSubmited(null);
+      setIsClosing(false);
+    }, 1000);
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!message) return;
+    if (!message.trim()) return;
 
     setIsSending(true);
 
-    const response = await fetch("/api/contact", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message }),
-    });
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message }),
+      });
 
-    const result = await response.json();
-
-    if (result.success) {
-      setSuccess(true);
-      setMessage("");
-    } else {
-      console.error("Ошибка отправки:", result.error);
+      const result = await response.json();
+      setIsSubmited(result.success);
+      if (result.success) setMessage("");
+    } catch (error) {
+      setIsSubmited(false);
+      console.error("Ошибка отправки:", error);
+    } finally {
+      setIsSending(false);
     }
-
-    setIsSending(false);
   };
 
   useEffect(() => {
@@ -79,45 +84,53 @@ export default function Menu() {
       </svg>
 
       {isModalOpen && (
-        <div className={styles.modalOverlay} onClick={handleCloseModal}>
-          <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+        <div
+          className={`${styles.modalOverlay} ${isClosing ? styles.hidden : ""}`}
+          onClick={handleCloseModal}
+        >
+          <div
+            className={`${styles.modal} ${isClosing ? styles.hidden : ""}`}
+            onClick={(e) => e.stopPropagation()}
+          >
             <button className={styles.closeButton} onClick={handleCloseModal}>
               &times;
             </button>
             <h2>Календарь дальней дороги</h2>
             <div className={styles.textContent}>
-              <p>
-                Все, с чем мы сталкиваемся, путешествуя. То, что помогает,
-                поддерживает или развлекает.
-              </p>
               <p>В конце года здесь будет архив с описанием всех дней.</p>
             </div>
 
             <form className={styles.form} onSubmit={handleSubmit}>
               <label>
-                Сообщение авторам:
-                <textarea
-                  className={styles.textarea}
-                  placeholder="Сообщить о неточности, предложить идею, поблагодарить или просто сказать привет!"
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                  onFocus={() => setSuccess(false)}
-                  required
-                />
+                А сейчас вы можете отправить сообщение авторам:
+                <div className={styles.textareaContainer}>
+                  <textarea
+                    className={styles.textarea}
+                    placeholder="Сообщить о неточности, предложить идею, поблагодарить или просто сказать привет!"
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    onFocus={() => setIsSubmited(null)}
+                    required
+                  />
+                </div>
               </label>
+              <div className={styles.successMessage}>
+                {isSubmited !== null &&
+                  (isSubmited ? (
+                    <p>Сообщение отправлено!</p>
+                  ) : (
+                    <p>Ошибка отправки</p>
+                  ))}
+              </div>
 
               <button
                 type="submit"
-                disabled={isSending}
+                disabled={isSending || !message}
                 className={styles.submitButton}
               >
                 {isSending ? "Отправка..." : "Отправить"}
               </button>
             </form>
-
-            {success && (
-              <p className={styles.successMessage}>Сообщение отправлено!</p>
-            )}
           </div>
         </div>
       )}

@@ -23,7 +23,7 @@ export default function Calendar() {
   });
   registerServiceWorker();
 
-  const [isImageAvailable, setIsImageAvailable] = useState<Boolean | null>(
+  const [isImageAvailable, setIsImageAvailable] = useState<boolean | null>(
     null
   );
 
