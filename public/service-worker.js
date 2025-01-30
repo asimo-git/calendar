@@ -14,6 +14,9 @@ const STATIC_FILES = [
   "/img-bg.png",
   "/page-bg-portret.png",
   "/page-bg.png",
+  "/modal-bg.png",
+  "/modal-bg-portret.png",
+  "/message-bg.png",
 ];
 
 async function hasMidnightPassed() {

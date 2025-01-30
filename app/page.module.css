@@ -17,19 +17,6 @@
   padding: 3em;
 }
 
-.title {
-  font-family: var(--font-accent), Helvetica, sans-serif;
-  color: #fff196;
-  letter-spacing: 0.2em;
-  font-weight: 100;
-  line-height: 1;
-  max-width: 1400px;
-  margin: 0 auto;
-  padding-left: 0.5em;
-  text-shadow: 2px 2px 4px rgb(41 31 0 / 88%);
-  font-size: 30px;
-}
-
 @media (max-width: 900px) {
   .page {
     height: auto;
