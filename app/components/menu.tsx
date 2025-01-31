@@ -1,5 +1,6 @@
 "use client";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
+import MenuIcon from "./menu-icon";
 import styles from "./menu.module.css";
 
 export default function Menu() {
@@ -9,17 +10,33 @@ export default function Menu() {
   const [isSubmited, setIsSubmited] = useState<boolean | null>(null);
   const [isClosing, setIsClosing] = useState(false);
 
+  const overlayRef = useRef<HTMLDivElement | null>(null);
+  const touchStartY = useRef(0);
+
   const handleMenuClick = () => {
     setIsModalOpen(true);
   };
 
-  const handleCloseModal = () => {
+  const handleCloseModal = useCallback(() => {
     setIsClosing(true);
-    setTimeout(() => {
-      setIsModalOpen(false);
-      setIsSubmited(null);
-      setIsClosing(false);
-    }, 1000);
+    if (overlayRef.current) {
+      overlayRef.current.addEventListener(
+        "animationend",
+        () => {
+          setIsModalOpen(false);
+          setIsSubmited(null);
+          setIsClosing(false);
+        },
+        { once: true }
+      );
+    }
+  }, []);
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    const touchEndY = e.changedTouches[0].clientY;
+    if (touchEndY - touchStartY.current < -100) {
+      handleCloseModal();
+    }
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -35,6 +52,10 @@ export default function Menu() {
         body: JSON.stringify({ message }),
       });
 
+      if (!response.ok) {
+        throw new Error(`Ошибка сервера: ${response.status}`);
+      }
+
       const result = await response.json();
       setIsSubmited(result.success);
       if (result.success) setMessage("");
@@ -46,13 +67,16 @@ export default function Menu() {
     }
   };
 
-  useEffect(() => {
-    const handleEscPress = (event: KeyboardEvent) => {
+  const handleEscPress = useCallback(
+    (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         handleCloseModal();
       }
-    };
+    },
+    [handleCloseModal]
+  );
 
+  useEffect(() => {
     if (isModalOpen) {
       document.documentElement.style.overflow = "hidden";
       window.addEventListener("keydown", handleEscPress);
@@ -65,32 +89,25 @@ export default function Menu() {
       document.documentElement.style.overflow = "";
       window.removeEventListener("keydown", handleEscPress);
     };
-  }, [isModalOpen]);
+  }, [isModalOpen, handleEscPress]);
 
   return (
     <>
-      <svg
-        width="50px"
-        height="30px"
-        viewBox="0 0 24 20"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        className={styles.menuIcon}
-        onClick={handleMenuClick}
-      >
-        <circle cx="5" cy="12" r="2" stroke="#fff196" strokeWidth="1.5" />
-        <circle cx="12" cy="12" r="2" stroke="#fff196" strokeWidth="1.5" />
-        <circle cx="19" cy="12" r="2" stroke="#fff196" strokeWidth="1.5" />
-      </svg>
+      <MenuIcon onClick={handleMenuClick} />
 
       {isModalOpen && (
         <div
+          ref={overlayRef}
           className={`${styles.modalOverlay} ${isClosing ? styles.hidden : ""}`}
           onClick={handleCloseModal}
         >
           <div
             className={`${styles.modal} ${isClosing ? styles.hidden : ""}`}
             onClick={(e) => e.stopPropagation()}
+            onTouchStart={(e: React.TouchEvent) =>
+              (touchStartY.current = e.touches[0].clientY)
+            }
+            onTouchEnd={handleTouchEnd}
           >
             <button className={styles.closeButton} onClick={handleCloseModal}>
               &times;

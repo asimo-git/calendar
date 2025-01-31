@@ -76,8 +76,9 @@ export default function Calendar() {
         <h3 className={styles.dayTitle}>{data.title ?? defaultDayTitle}</h3>
         <div className={styles.content}>
           {data.description !== null ? (
-            <div dangerouslySetInnerHTML={{ __html: data.description }} />
+            <div></div>
           ) : (
+            // <div dangerouslySetInnerHTML={{ __html: data.description }} />
             defaultDayDescription
           )}
         </div>
