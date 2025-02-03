@@ -33,3 +33,7 @@ blockquote {
   border-left: solid 8px #7c613959;
   padding-left: 0.5em;
 }
+
+ul {
+  padding-left: 20px;
+}
