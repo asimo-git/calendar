@@ -115,22 +115,21 @@ export default function Menu() {
             <h2>Календарь дальней дороги</h2>
             <div className={styles.textContent}>
               <p>В конце года здесь будет архив с описанием всех дней.</p>
+              <p>А сейчас вы можете отправить сообщение авторам:</p>
             </div>
 
             <form className={styles.form} onSubmit={handleSubmit}>
-              <label>
-                А сейчас вы можете отправить сообщение авторам:
-                <div className={styles.textareaContainer}>
-                  <textarea
-                    className={styles.textarea}
-                    placeholder="Сообщить о неточности, предложить идею, поблагодарить или просто сказать привет!"
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    onFocus={() => setIsSubmited(null)}
-                    required
-                  />
-                </div>
-              </label>
+              <div className={styles.textareaContainer}>
+                <textarea
+                  className={styles.textarea}
+                  placeholder="Сообщить о неточности, предложить идею, поблагодарить или просто сказать привет!"
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  onFocus={() => setIsSubmited(null)}
+                  required
+                />
+              </div>
+
               <div className={styles.successMessage}>
                 {isSubmited !== null &&
                   (isSubmited ? (
@@ -142,7 +141,7 @@ export default function Menu() {
 
               <button
                 type="submit"
-                disabled={isSending || !message}
+                disabled={isSending || !message.trim()}
                 className={styles.submitButton}
               >
                 {isSending ? "Отправка..." : "Отправить"}
