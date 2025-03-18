@@ -13,7 +13,7 @@ export const MONTHS = [
   "декабря",
 ];
 
-export const defaultDayDescription =
+export const DEFAULT_DAY_DESCRIPTION =
   "Пусть это будет просто день, в котором не происходит ничего особенного";
 
-export const defaultDayTitle = "День на Земле";
+export const DEFAULT_DAY_TITLE = "День на Земле";

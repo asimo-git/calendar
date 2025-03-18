@@ -3,9 +3,10 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { getDayDescription } from "../services/supabase";
+import styles from "../styles/calendar.module.css";
 import {
-  defaultDayDescription,
-  defaultDayTitle,
+  DEFAULT_DAY_DESCRIPTION,
+  DEFAULT_DAY_TITLE,
   MONTHS,
 } from "../utils/constants";
 import {
@@ -13,7 +14,6 @@ import {
   getDate,
   registerServiceWorker,
 } from "../utils/helpers";
-import styles from "./calendar.module.css";
 
 export default function Calendar() {
   const [data, setData] = useState({
@@ -85,12 +85,14 @@ export default function Calendar() {
         <>
           <section className={styles.description}>
             {" "}
-            <h3 className={styles.dayTitle}>{data.title ?? defaultDayTitle}</h3>
+            <h3 className={styles.dayTitle}>
+              {data.title ?? DEFAULT_DAY_TITLE}
+            </h3>
             <div className={styles.content}>
               {data.description !== null ? (
                 <div dangerouslySetInnerHTML={{ __html: data.description }} />
               ) : (
-                defaultDayDescription
+                DEFAULT_DAY_DESCRIPTION
               )}
             </div>
           </section>
