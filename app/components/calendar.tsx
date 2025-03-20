@@ -3,9 +3,10 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { getDayDescription } from "../services/supabase";
+import styles from "../styles/calendar.module.css";
 import {
-  defaultDayDescription,
-  defaultDayTitle,
+  DEFAULT_DAY_DESCRIPTION,
+  DEFAULT_DAY_TITLE,
   MONTHS,
 } from "../utils/constants";
 import {
@@ -13,7 +14,6 @@ import {
   getDate,
   registerServiceWorker,
 } from "../utils/helpers";
-import styles from "./calendar.module.css";
 
 export default function Calendar() {
   const [data, setData] = useState({
@@ -23,6 +23,7 @@ export default function Calendar() {
   });
   registerServiceWorker();
 
+  const [loading, setLoading] = useState(true);
   const [isImageAvailable, setIsImageAvailable] = useState<boolean | null>(
     null
   );
@@ -32,6 +33,7 @@ export default function Calendar() {
 
   useEffect(() => {
     async function fetchData() {
+      setLoading(true);
       try {
         const { description, imageUrl, title } = await getDayDescription(
           currentKey
@@ -47,6 +49,8 @@ export default function Calendar() {
         }
       } catch (error) {
         console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
       }
     }
 
@@ -68,20 +72,32 @@ export default function Calendar() {
               alt="image of the day"
               fill
               className={styles.dayImage}
+              placeholder="blur"
+              blurDataURL="/loader.gif"
             />
           )}
         </div>
       </section>
-      <section className={styles.description}>
-        <h3 className={styles.dayTitle}>{data.title ?? defaultDayTitle}</h3>
-        <div className={styles.content}>
-          {data.description !== null ? (
-            <div dangerouslySetInnerHTML={{ __html: data.description }} />
-          ) : (
-            defaultDayDescription
-          )}
-        </div>
-      </section>
+
+      {loading ? (
+        <div className={styles.loader}></div>
+      ) : (
+        <>
+          <section className={styles.description}>
+            {" "}
+            <h3 className={styles.dayTitle}>
+              {data.title ?? DEFAULT_DAY_TITLE}
+            </h3>
+            <div className={styles.content}>
+              {data.description !== null ? (
+                <div dangerouslySetInnerHTML={{ __html: data.description }} />
+              ) : (
+                DEFAULT_DAY_DESCRIPTION
+              )}
+            </div>
+          </section>
+        </>
+      )}
     </>
   );
 }

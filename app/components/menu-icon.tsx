@@ -1,4 +1,5 @@
-import styles from "./menu-icon.module.css";
+"use client";
+import styles from "../styles/menu-icon.module.css";
 
 export default function MenuIcon({ onClick }: { onClick: () => void }) {
   return (

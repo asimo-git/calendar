@@ -1,7 +1,7 @@
 "use client";
 import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
+import styles from "../styles/menu.module.css";
 import MenuIcon from "./menu-icon";
-import styles from "./menu.module.css";
 
 export default function Menu() {
   const [isModalOpen, setIsModalOpen] = useState(false);

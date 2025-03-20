@@ -1,4 +1,4 @@
-import styles from "./header.module.css";
+import styles from "../styles/header.module.css";
 import Menu from "./menu";
 
 export default async function Header() {
